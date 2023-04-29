@@ -8,9 +8,11 @@ const initialForm = {
   details: ''
 };
 
-const apiUrl = process.env.REACT_APP_LOCAL
-  ? process.env.REACT_APP_API_URL
-  : `https://gqlzgean1g.execute-api.us-east-1.amazonaws.com/PROD`;
+// const apiUrl = process.env.REACT_APP_LOCAL
+//   ? process.env.REACT_APP_API_URL
+//   : `https://gqlzgean1g.execute-api.us-east-1.amazonaws.com/PROD`;
+
+const apiUrl = `https://gqlzgean1g.execute-api.us-east-1.amazonaws.com/PROD`;
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -18,7 +20,7 @@ function App() {
   const [newTask, setNewTask] = useState(initialForm);
   
   const fetchTasks = async () => {
-    console.info(`fetching new tasks...`)
+    console.info(`fetching new tasks...`, { apiUrl })
     const resp = await fetch(apiUrl)
     const { data } = await resp.json();
     setTasks(data);
