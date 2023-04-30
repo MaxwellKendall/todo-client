@@ -57,6 +57,7 @@ function App() {
     })
     await fetchTasks();
     setActiveTask(null);
+    setNewTask(initialForm);
   }
 
   const addTask = (e) => {
