@@ -105,6 +105,7 @@ function App() {
         <li><button onClick={addTask}>New Task</button></li>
           {isLoading && <p>Loading...</p>}
           {tasks
+            .sort((a, b) => b.lastUpdated - a.lastUpdated)
             .map(renderTasks)
           }
       </ul>
