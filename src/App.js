@@ -77,6 +77,7 @@ function App() {
       <header className="App-header">
         <h1>Task List</h1>
       </header>
+      {/* Show Task Detail */}
       {activeTask !== null && activeTask > -1 && (
         <div className="task-detail">
           <h2>{`Task Title: ${tasks[activeTask].title}`}</h2>
@@ -86,6 +87,7 @@ function App() {
           <button onClick={(e) => setActiveTask(null)}>All Tasks</button>
         </div>
       )}
+      {/* Show New Task Form */}
       {activeTask === -1 && (
         <form>
           <label>Title:</label><input type="text" value={newTask.title} onChange={(e) => handleInputChange(e, 'title')} />
