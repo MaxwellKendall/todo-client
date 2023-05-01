@@ -8,22 +8,21 @@ const initialForm = {
   details: ''
 };
 
-// const apiUrl = process.env.REACT_APP_LOCAL
-//   ? process.env.REACT_APP_API_URL
-//   : `https://gqlzgean1g.execute-api.us-east-1.amazonaws.com/PROD`;
-
 const apiUrl = `https://gqlzgean1g.execute-api.us-east-1.amazonaws.com/PROD`;
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [activeTask, setActiveTask] = useState(null);
   const [newTask, setNewTask] = useState(initialForm);
   
   const fetchTasks = async () => {
+    setIsLoading(true);
     console.info(`fetching new tasks...`, { apiUrl })
     const resp = await fetch(apiUrl)
     const { data } = await resp.json();
     setTasks(data);
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -47,6 +46,7 @@ function App() {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     await fetch(apiUrl, {
       method: 'post',
       mode: 'cors',
@@ -55,8 +55,8 @@ function App() {
       },
       body: JSON.stringify(newTask),
     })
-    await fetchTasks();
     setActiveTask(null);
+    await fetchTasks();
     setNewTask(initialForm);
   }
 
@@ -93,14 +93,18 @@ function App() {
           <label>Details:</label><textarea type="text" value={newTask.details} onChange={(e) => handleInputChange(e, 'details')} />
           <div className='buttons'>
             <button onClick={(e) => setActiveTask(null)}>Cancel</button>
-            <button onClick={handleCreateTask}>Save</button>
+            <button onClick={handleCreateTask}>{isLoading ? 'Loading...' : 'Save'}</button>
           </div>
         </form>
       )}
+      {/* Show Task List */}
       {activeTask === null && (
         <ul>
         <li><button onClick={addTask}>New Task</button></li>
-        {tasks.map(renderTasks)}
+          {isLoading && <p>Loading...</p>}
+          {tasks
+            .map(renderTasks)
+          }
       </ul>
       )}
     </div>
